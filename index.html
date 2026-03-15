@@ -144,7 +144,7 @@
         <div class="container reveal">
             <h2>¡Los esperamos para celebrar juntos nuestros 40!</h2>
             <div class="footer-actions">
-                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Cumplea%C3%B1os+Cristian+y+Romina&dates=20260330T220000Z/20260331T010000Z&details=Celebren+con+nosotros+nuestros+40+a%C3%B1os.&location=Fray+M.+Esqui%C3%BA+2354,+Lan%C3%BAs,+Argentina"
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Cumplea%C3%B1os+Cris+y+Romi&dates=20260330T220000Z/20260331T010000Z&details=Celebren+con+nosotros+nuestros+40+a%C3%B1os.&location=Fray+M.+Esqui%C3%BA+2354,+Lan%C3%BAs,+Argentina"
                     target="_blank" class="btn btn-outline"><i class="far fa-calendar-plus"></i> Agregar al
                     Calendario</a>
 
@@ -161,7 +161,7 @@
     <div id="admin-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="close-admin">&times;</span>
-            <h2 style="color: var(--black);">Panel de Administrador</h2>
+            <h2 style="color: var(--gold);">Panel de Administrador</h2>
 
             <div id="admin-login-section">
                 <div class="form-group">
@@ -173,9 +173,11 @@
             </div>
 
             <div id="admin-dashboard-section" class="hidden">
+                <h1 id="print-header" class="hidden"
+                    style="font-family: var(--font-heading); text-align: center; margin-bottom: 2rem;">Cris & Romi</h1>
                 <div
                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
-                    <h3 style="color: var(--black);">Lista de Confirmados</h3>
+                    <h3 style="color: var(--gold);">Lista de Confirmados</h3>
                     <div style="display: flex; gap: 10px;">
                         <button id="print-guests" class="btn btn-primary"
                             style="padding: 0.5rem 1rem; font-size: 0.8rem;"><i class="fas fa-print"></i>
@@ -183,6 +185,12 @@
                         <button id="clear-guests" class="btn btn-outline"
                             style="padding: 0.5rem 1rem; font-size: 0.8rem;">Borrar Datos</button>
                     </div>
+                </div>
+
+                <div id="guest-stats"
+                    style="margin-bottom: 1rem; color: var(--off-white); display: flex; gap: 1.5rem; justify-content: center; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                    <span>Total Adultos: <strong id="count-adults" style="color: var(--gold);">0</strong></span>
+                    <span>Total Niños/as: <strong id="count-children" style="color: var(--gold);">0</strong></span>
                 </div>
 
                 <div class="table-container">
@@ -195,7 +203,7 @@
                                 <th>Detalle Acompañantes</th>
                             </tr>
                         </thead>
-                        <tbody id="guests-tbody" style="color: var(--black);">
+                        <tbody id="guests-tbody" style="color: var(--white);">
                             <!-- Populated by JS -->
                         </tbody>
                     </table>

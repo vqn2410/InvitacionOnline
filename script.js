@@ -61,13 +61,13 @@ const body = document.body;
 
 envelopeOverlay.addEventListener('click', () => {
     envelopeOverlay.classList.add('open');
-    
+
     // Play music on first interaction
     if (!isPlaying) {
         bgMusic.play().then(() => {
             musicBtn.innerHTML = '<i class="fas fa-music"></i>';
             isPlaying = true;
-        }).catch(() => {});
+        }).catch(() => { });
     }
 
     // Unlock scrolling after animation ends
@@ -76,7 +76,7 @@ envelopeOverlay.addEventListener('click', () => {
         setTimeout(() => {
             envelopeOverlay.style.display = 'none';
         }, 1000);
-    }, 1500); 
+    }, 1500);
 }, { once: true });
 
 
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.random() * (max - min) + min;
     }
 
-    const interval = setInterval(function() {
+    const interval = setInterval(function () {
         const timeLeft = animationEnd - Date.now();
 
         if (timeLeft <= 0) {
@@ -113,10 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const particleCount = 20 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount,
+        confetti(Object.assign({}, defaults, {
+            particleCount,
             origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
         }));
-        confetti(Object.assign({}, defaults, { particleCount,
+        confetti(Object.assign({}, defaults, {
+            particleCount,
             origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
         }));
     }, 250);
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Countdown Timer (Set to March 30, 2026, 19:00)
 const countdownDate = new Date("March 30, 2026 19:00:00").getTime();
 
-const x = setInterval(function() {
+const x = setInterval(function () {
     const now = new Date().getTime();
     const distance = countdownDate - now;
 
@@ -161,9 +163,9 @@ attendSelect.addEventListener('change', (e) => {
 guestsInput.addEventListener('input', (e) => {
     const num = parseInt(e.target.value) || 0;
     dynamicGuestsContainer.innerHTML = ''; // Clear existing
-    
+
     if (num > 0) {
-        for(let i = 1; i <= num; i++) {
+        for (let i = 1; i <= num; i++) {
             const guestHtml = `
                 <div class="dynamic-guest fade-in-up">
                     <p style="color: var(--gold); margin-bottom: 0.5rem; font-size: 0.9rem;">Acompañante #${i}</p>
@@ -189,21 +191,21 @@ guestsInput.addEventListener('input', (e) => {
 // RSVP Form Submit
 rsvpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     // Collect data
     const btn = rsvpForm.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-    
+
     const mainName = document.getElementById('name').value;
     const isAttending = attendSelect.value;
     const numGuests = parseInt(guestsInput.value) || 0;
-    
+
     let extraGuests = [];
-    if(isAttending === 'yes' && numGuests > 0) {
+    if (isAttending === 'yes' && numGuests > 0) {
         const guestNames = document.querySelectorAll('.guest-name');
         const guestTypes = document.querySelectorAll('.guest-type');
-        
-        for(let i = 0; i < numGuests; i++) {
+
+        for (let i = 0; i < numGuests; i++) {
             extraGuests.push({
                 name: guestNames[i] ? guestNames[i].value : '',
                 type: guestTypes[i] ? guestTypes[i].value : ''
@@ -226,7 +228,7 @@ rsvpForm.addEventListener('submit', async (e) => {
         await addDoc(collection(db, "rsvps"), registrationData);
         rsvpForm.style.display = 'none';
         formSuccess.classList.remove('hidden');
-        
+
         setTimeout(() => {
             rsvpForm.reset();
             dynamicGuestsContainer.innerHTML = '';
@@ -259,7 +261,7 @@ closeAdminBtn.addEventListener('click', () => {
 });
 
 adminSubmit.addEventListener('click', () => {
-    if(adminPassword.value === 'admin123') { // Simple password
+    if (adminPassword.value === 'Admin123@') { // Simple password
         adminError.classList.add('hidden');
         adminLoginSection.classList.add('hidden');
         adminDashboardSection.classList.remove('hidden');
@@ -278,27 +280,44 @@ adminPassword.addEventListener('keypress', (e) => {
 
 async function renderAdminDashboard() {
     guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gold);">Cargando confirmaciones...</td></tr>';
-    
+
     try {
         const querySnapshot = await getDocs(collection(db, "rsvps"));
         const data = [];
         querySnapshot.forEach((document) => {
             data.push({ id: document.id, ...document.data() });
         });
-        
+
         guestsTbody.innerHTML = '';
-        
-        if(data.length === 0) {
+
+        let totalAdults = 0;
+        let totalChildren = 0;
+
+        if (data.length === 0) {
             guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay confirmaciones aún.</td></tr>';
+            document.getElementById('count-adults').innerText = "0";
+            document.getElementById('count-children').innerText = "0";
             return;
         }
 
         data.forEach(guest => {
             let extraInfo = '-';
-            if(guest.extraGuests && guest.extraGuests.length > 0) {
-                extraInfo = guest.extraGuests.map(eg => `&bull; ${eg.name} <i>(${eg.type})</i>`).join('<br>');
+
+            if (guest.attending === 'Sí') {
+                totalAdults++; // The main guest is always considered an Adult
+
+                if (guest.extraGuests && guest.extraGuests.length > 0) {
+                    extraInfo = guest.extraGuests.map(eg => {
+                        if (eg.type === 'Adulto') {
+                            totalAdults++;
+                        } else if (eg.type === 'Niño/a') {
+                            totalChildren++;
+                        }
+                        return `&bull; ${eg.name} <i>(${eg.type})</i>`;
+                    }).join('<br>');
+                }
             }
-            
+
             const row = `
                 <tr>
                     <td><strong>${guest.name}</strong></td>
@@ -309,6 +328,9 @@ async function renderAdminDashboard() {
             `;
             guestsTbody.insertAdjacentHTML('beforeend', row);
         });
+
+        document.getElementById('count-adults').innerText = totalAdults;
+        document.getElementById('count-children').innerText = totalChildren;
     } catch (e) {
         guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error al cargar datos.</td></tr>';
         console.error(e);
@@ -316,7 +338,7 @@ async function renderAdminDashboard() {
 }
 
 clearGuestsBtn.addEventListener('click', async () => {
-    if(confirm('¿Estás seguro de que deseas borrar toda la lista de invitados? Esta acción no se puede deshacer.')) {
+    if (confirm('¿Estás seguro de que deseas borrar toda la lista de invitados? Esta acción no se puede deshacer.')) {
         const prevText = clearGuestsBtn.innerHTML;
         clearGuestsBtn.innerHTML = "Borrando...";
         try {
@@ -327,7 +349,7 @@ clearGuestsBtn.addEventListener('click', async () => {
             });
             await Promise.all(deletePromises);
             renderAdminDashboard();
-        } catch(e) {
+        } catch (e) {
             console.error(e);
             alert("Hubo un error al borrar.");
         }

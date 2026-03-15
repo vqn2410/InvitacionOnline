@@ -727,8 +727,8 @@ body.locked {
 }
 
 .modal-content {
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--dark-grey);
+    color: var(--white);
     padding: 2.5rem;
     border: 1px solid var(--gold);
     width: 90%;
@@ -753,7 +753,7 @@ body.locked {
 
 .close-modal:hover,
 .close-modal:focus {
-    color: var(--black);
+    color: var(--white);
     text-decoration: none;
 }
 
@@ -771,39 +771,45 @@ body.locked {
 
 .guests-table th,
 .guests-table td {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px 15px;
     text-align: left;
 }
 
 .guests-table th {
-    background-color: var(--gold-light);
-    color: var(--black);
+    background-color: var(--black);
+    color: var(--gold);
     font-weight: 600;
 }
 
 .guests-table tr:hover {
-    background-color: #f9f9f9;
+    background-color: var(--medium-grey);
 }
 
 /* Print Rules */
 @media print {
-    body * {
-        visibility: hidden;
+    @page {
+        margin: 0 1cm;
     }
 
-    #admin-dashboard-section,
-    #admin-dashboard-section * {
-        visibility: visible;
+    body>*:not(#admin-modal),
+    #admin-login-section,
+    .close-modal,
+    #admin-modal>.modal-content>h2 {
+        display: none !important;
     }
 
     #admin-dashboard-section {
-        position: absolute;
-        left: 0;
-        top: 0;
+        display: block !important;
+        position: static;
         width: 100%;
         margin: 0;
         padding: 0;
+    }
+
+    #print-header {
+        display: block !important;
+        color: #000 !important;
     }
 
     /* Reset layout that might hide the table or cut it off */
@@ -811,6 +817,8 @@ body.locked {
     html {
         height: auto;
         overflow: visible;
+        background-color: #fff !important;
+        color: #000 !important;
     }
 
     body.locked {
@@ -821,11 +829,14 @@ body.locked {
     .modal {
         position: static;
         background: none;
+        background-color: #fff !important;
         display: block;
         align-items: flex-start;
     }
 
     .modal-content {
+        background-color: #fff !important;
+        color: #000 !important;
         box-shadow: none;
         border: none;
         width: 100%;
@@ -836,6 +847,18 @@ body.locked {
         overflow: visible;
     }
 
+    #admin-dashboard-section h3,
+    #admin-dashboard-section span,
+    #admin-dashboard-section strong {
+        color: #000 !important;
+    }
+
+    #guest-stats {
+        background: #fff !important;
+        color: #000 !important;
+        border: 1px solid #ccc !important;
+    }
+
     .table-container {
         overflow: visible;
         border: none;
@@ -844,8 +867,12 @@ body.locked {
     .guests-table,
     .guests-table th,
     .guests-table td {
-        border-color: #000;
-        color: #000;
+        border-color: #000 !important;
+        color: #000 !important;
+    }
+
+    #guests-tbody {
+        color: #000 !important;
     }
 
     .guests-table th {
