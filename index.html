@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los 40 de Cristian & Romina</title>
+    <!-- SEO tags -->
+    <meta name="description"
+        content="Están invitados a celebrar los 40 años de Cristian y Romina. ¡Acompáñenos en esta fecha especial!">
+    <meta property="og:title" content="Los 40 de Cristian & Romina">
+    <meta property="og:description"
+        content="Están invitados a celebrar los 40 años de Cristian y Romina. ¡Acompáñenos en esta fecha especial!">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="locked">
+
+    <!-- Envelope Animation Overlay -->
+    <div id="envelope-overlay" class="envelope-overlay">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-front"></div>
+                    <div class="envelope-wax">
+                        <span>40</span>
+                    </div>
+                </div>
+            </div>
+            <p class="envelope-hint">Toca para abrir</p>
+        </div>
+    </div>
+
+    <!-- Audio wrapper -->
+    <button id="music-toggle" aria-label="Reproducir/Pausar música">
+        <i class="fas fa-volume-mute"></i>
+    </button>
+    <audio id="bg-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-pop-05-695.mp3" type="audio/mpeg">
+    </audio>
+
+    <header class="hero" id="home">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="hero-content fade-in-up">
+            <h2 class="subtitle">Los invitamos a celebrar</h2>
+            <h1 class="title">Nuestros 40</h1>
+            <p class="name">Cris & Romi</p>
+            <a href="#info" class="scroll-btn">Ver invitación <i class="fas fa-chevron-down"></i></a>
+        </div>
+    </header>
+
+    <section class="info" id="info">
+        <div class="container reveal">
+            <h2>Cuándo y Dónde</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="far fa-calendar-alt"></i>
+                    <h3>Fecha</h3>
+                    <p>Lunes, 30 de Marzo</p>
+                </div>
+                <div class="info-card">
+                    <i class="far fa-clock"></i>
+                    <h3>Hora</h3>
+                    <p>De 19:00 a 22:00 hs</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Lugar</h3>
+                    <p>Fray M. Esquiú 2354<br>Lanús, Argentina</p>
+                    <a href="https://maps.google.com/?q=Fray+M.+Esquiú+2354,+Lanús,+Argentina" target="_blank"
+                        class="btn btn-outline">Ver en Google Maps</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="countdown-section">
+        <div class="container reveal">
+            <h2>Faltan</h2>
+            <div class="countdown" id="countdown">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <p>Días</p>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <p>Horas</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <p>Minutos</p>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <p>Segundos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="rsvp">
+        <div class="container reveal">
+            <h2>Confirmar Asistencia</h2>
+            <p class="texto-centrado">Por favor, confirmá tu asistencia antes del 20 de Marzo.</p>
+            <form id="rsvp-form" class="rsvp-form">
+                <div class="form-group">
+                    <label for="name">Nombre y Apellido</label>
+                    <input type="text" id="name" required placeholder="Ingresá tu nombre" autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="attend">¿Asistirás?</label>
+                    <select id="attend" required>
+                        <option value="" disabled selected>Seleccioná una opción</option>
+                        <option value="yes">Sí, ahí estaré</option>
+                        <option value="no">No podré asistir</option>
+                    </select>
+                </div>
+                <div class="form-group" id="guests-group" style="display: none;">
+                    <label for="guests">Cantidad de acompañantes</label>
+                    <input type="number" id="guests" min="0" max="5" value="0">
+                </div>
+                <div id="dynamic-guests-container"></div>
+                <button type="submit" class="btn btn-primary">Enviar Confirmación</button>
+            </form>
+            <div id="form-success" class="hidden message">¡Gracias por confirmar! Te esperamos.</div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container reveal">
+            <h2>¡Los esperamos para celebrar juntos nuestros 40!</h2>
+            <div class="footer-actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Cumplea%C3%B1os+Cristian+y+Romina&dates=20260330T220000Z/20260331T010000Z&details=Celebren+con+nosotros+nuestros+40+a%C3%B1os.&location=Fray+M.+Esqui%C3%BA+2354,+Lan%C3%BAs,+Argentina"
+                    target="_blank" class="btn btn-outline"><i class="far fa-calendar-plus"></i> Agregar al
+                    Calendario</a>
+
+            </div>
+            <div style="margin-top: 4rem;">
+                <a href="#" id="admin-login-btn"
+                    style="color: var(--gold-dark); opacity: 0.5; font-size: 0.8rem; text-decoration: none;"><i
+                        class="fas fa-lock"></i> Acceso Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Modal -->
+    <div id="admin-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="close-admin">&times;</span>
+            <h2 style="color: var(--black);">Panel de Administrador</h2>
+
+            <div id="admin-login-section">
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="new-password">
+                </div>
+                <button id="admin-submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+                <p id="admin-error" class="hidden" style="color: #e74c3c; margin-top: 10px; text-align: center;">
+                    Contraseña incorrecta</p>
+            </div>
+
+            <div id="admin-dashboard-section" class="hidden">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+                    <h3 style="color: var(--black);">Lista de Confirmados</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="print-guests" class="btn btn-primary"
+                            style="padding: 0.5rem 1rem; font-size: 0.8rem;"><i class="fas fa-print"></i>
+                            Imprimir</button>
+                        <button id="clear-guests" class="btn btn-outline"
+                            style="padding: 0.5rem 1rem; font-size: 0.8rem;">Borrar Datos</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="guests-table">
+                        <thead>
+                            <tr>
+                                <th>Invitado Principal</th>
+                                <th>Asiste</th>
+                                <th>Acompañantes</th>
+                                <th>Detalle Acompañantes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guests-tbody" style="color: var(--black);">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
