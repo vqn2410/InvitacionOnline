@@ -151,8 +151,7 @@ h2 {
     justify-content: center;
     align-items: center;
     position: relative;
-    background: var(--black);
-    /* Light cream */
+    background: url('bg-rustic.png') center/cover no-repeat;
     overflow: hidden;
     padding: 2rem;
 }
