@@ -556,13 +556,21 @@ h2 {
         padding: 3rem 1.5rem;
     }
 
+    .countdown {
+        gap: 0.8rem;
+    }
+
     .time-box {
-        width: 100px;
-        height: 100px;
+        width: 75px;
+        height: 75px;
     }
 
     .time-box span {
-        font-size: 2rem;
+        font-size: 1.5rem;
+    }
+
+    .time-box p {
+        font-size: 0.6rem;
     }
 
     .rsvp-form {
