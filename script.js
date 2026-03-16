@@ -61,6 +61,7 @@ const body = document.body;
 
 envelopeOverlay.addEventListener('click', () => {
     envelopeOverlay.classList.add('open');
+    body.classList.add('envelope-opened');
 
     // Play music on first interaction
     if (!isPlaying) {

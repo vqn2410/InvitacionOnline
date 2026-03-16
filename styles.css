@@ -252,6 +252,21 @@ h2 {
     letter-spacing: 2px;
     text-transform: none;
     line-height: 1;
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+}
+
+body.envelope-opened .elegant-details .elegant-names-cursive {
+    animation: handwriting 2.5s cubic-bezier(0.4, 0, 0.2, 1) 3s forwards;
+}
+
+@keyframes handwriting {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        clip-path: inset(0 -10% 0 0);
+    }
 }
 
 .scroll-btn {
