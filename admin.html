@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador - Cris & Romi 40</title>
+    <!-- Fonts and styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: var(--dark-grey);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .admin-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--black);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            color: var(--white);
+        }
+        .close-admin { display: none; }
+        
+        #edit-modal .modal-content {
+            background-color: var(--dark-grey);
+        }
+
+        /* Adjust print rules to make admin-container full width and hide border */
+        @media print {
+            .admin-container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            body {
+                background: white !important;
+                padding: 0;
+            }
+            
+            #admin-dashboard-section > :not(#print-container) {
+                display: none !important;
+            }
+            
+            #print-container {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Back button -->
+        <a href="index.html" class="hide-on-print" style="color: var(--gold); text-decoration: none; margin-bottom: 2rem; display: inline-block;">
+            <i class="fas fa-arrow-left"></i> Volver a la invitación
+        </a>
+        
+        <h2 style="color: var(--gold);" class="hide-on-print">Panel de Administrador</h2>
+
+        <!-- Login Section -->
+        <div id="admin-login-section">
+            <div class="form-group">
+                <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="new-password">
+            </div>
+            <button id="admin-submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+            <p id="admin-error" class="hidden" style="color: #e74c3c; margin-top: 10px; text-align: center;">Contraseña incorrecta</p>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="admin-dashboard-section" class="hidden">
+            <h1 id="print-header" class="hidden" style="font-family: var(--font-heading); text-align: center; margin-bottom: 2rem;">Cris & Romi</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+                <h3 style="color: var(--gold);">Lista de Confirmados</h3>
+                <div style="display: flex; gap: 10px;">
+                    <button id="print-guests" class="btn btn-primary hide-on-print" style="padding: 0.5rem 1rem; font-size: 0.8rem;"><i class="fas fa-print"></i> Imprimir</button>
+                    <button id="clear-guests" class="btn btn-outline hide-on-print" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Borrar Datos</button>
+                </div>
+            </div>
+
+            <div id="guest-stats" style="margin-bottom: 1rem; color: var(--off-white); display: flex; gap: 1.5rem; justify-content: center; background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 8px;">
+                <span>Total Adultos: <strong id="count-adults" style="color: var(--gold);">0</strong></span>
+                <span>Total Niños/as: <strong id="count-children" style="color: var(--gold);">0</strong></span>
+            </div>
+
+            <!-- Search Bar -->
+            <div style="margin-bottom: 1.5rem; display: flex; gap: 1rem;">
+                <input type="text" id="search-guest" class="hide-on-print" placeholder="Buscar invitado por nombre..." style="flex: 1; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--gold); background: rgba(0,0,0,0.3); color: var(--gold); font-family: var(--font-body); min-width: 250px;">
+            </div>
+
+            <div class="table-container">
+                <table class="guests-table" style="color: var(--white);">
+                    <thead>
+                        <tr>
+                            <th>Apellido y Nombre</th>
+                            <th>Asiste</th>
+                            <th>Acompañantes</th>
+                            <th>Detalle Acompañantes</th>
+                            <th>Llegó</th>
+                            <th class="hide-on-print">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="guests-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Print Container (Only visible on print) -->
+            <div id="print-container" style="display: none; color: #000;">
+                <h1 style="text-align: center; margin-bottom: 2rem; font-family: var(--font-heading); color: #000;">Lista de Invitados - Cris & Romi</h1>
+                
+                <div style="margin-bottom: 2rem; page-break-inside: avoid;">
+                    <h2 style="color: #000; font-size: 1.5rem; margin-bottom: 1rem; text-align: left; font-family: var(--font-heading);">Adultos (<span id="print-total-adults">0</span>)</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+                        <thead>
+                            <tr>
+                                <th style="border-bottom: 2px solid #000; padding: 8px; text-align: left; background: #eee; -webkit-print-color-adjust: exact; print-color-adjust: exact;">Nombre</th>
+                                <th style="border-bottom: 2px solid #000; padding: 8px; text-align: left; background: #eee; -webkit-print-color-adjust: exact; print-color-adjust: exact;">Grupo / Invitado por</th>
+                            </tr>
+                        </thead>
+                        <tbody id="print-adults-tbody"></tbody>
+                    </table>
+                </div>
+
+                <div style="page-break-inside: avoid;">
+                    <h2 style="color: #000; font-size: 1.5rem; margin-bottom: 1rem; text-align: left; font-family: var(--font-heading);">Niños/as (<span id="print-total-children">0</span>)</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="border-bottom: 2px solid #000; padding: 8px; text-align: left; background: #eee; -webkit-print-color-adjust: exact; print-color-adjust: exact;">Nombre</th>
+                                <th style="border-bottom: 2px solid #000; padding: 8px; text-align: left; background: #eee; -webkit-print-color-adjust: exact; print-color-adjust: exact;">Grupo / Invitado por</th>
+                            </tr>
+                        </thead>
+                        <tbody id="print-children-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal (Still a modal within the admin page) -->
+    <div id="edit-modal" class="modal hidden" style="z-index: 2000;">
+        <div class="modal-content">
+            <span class="close-modal" id="close-edit" style="color: #999;">&times;</span>
+            <h2 style="color: var(--gold);">Editar Invitado</h2>
+            <form id="edit-form" class="rsvp-form" style="margin-top: 1rem; text-align: left;">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label for="edit-name">Nombre y Apellido</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-attend">¿Asiste?</label>
+                    <select id="edit-attend" required>
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group" id="edit-guests-group" style="display: none;">
+                    <label for="edit-guests">Cantidad de acompañantes</label>
+                    <input type="number" id="edit-guests" min="0" max="5" value="0">
+                </div>
+                <div id="edit-dynamic-guests-container"></div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem;">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

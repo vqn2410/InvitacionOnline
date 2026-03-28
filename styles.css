@@ -882,7 +882,7 @@ body.locked {
         margin: 0 1cm;
     }
 
-    body>*:not(#admin-modal),
+    body>*:not(#admin-modal):not(.admin-container),
     #admin-login-section,
     .close-modal,
     #admin-modal>.modal-content>h2 {
@@ -976,7 +976,8 @@ body.locked {
     #clear-guests,
     #print-guests,
     #music-toggle,
-    #envelope-overlay {
+    #envelope-overlay,
+    .hide-on-print {
         display: none !important;
     }
 }

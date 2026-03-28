@@ -1,6 +1,6 @@
 // Firebase Setup
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBTk84_UsgYfi8ihPxWEU_GbTLZ5OEozFM",
@@ -26,18 +26,7 @@ const guestsGroup = document.getElementById('guests-group');
 const guestsInput = document.getElementById('guests');
 const dynamicGuestsContainer = document.getElementById('dynamic-guests-container');
 
-// Admin Elements
-const adminLoginBtn = document.getElementById('admin-login-btn');
-const adminModal = document.getElementById('admin-modal');
-const closeAdminBtn = document.getElementById('close-admin');
-const adminSubmit = document.getElementById('admin-submit');
-const adminPassword = document.getElementById('admin-password');
-const adminError = document.getElementById('admin-error');
-const adminLoginSection = document.getElementById('admin-login-section');
-const adminDashboardSection = document.getElementById('admin-dashboard-section');
-const guestsTbody = document.getElementById('guests-tbody');
-const clearGuestsBtn = document.getElementById('clear-guests');
-const printGuestsBtn = document.getElementById('print-guests');
+// Empty Admin section variable declarations removed
 
 // Music Toggle Logic
 let isPlaying = false;
@@ -243,121 +232,4 @@ rsvpForm.addEventListener('submit', async (e) => {
         btn.disabled = false;
         alert("Hubo un error al enviar tu confirmación. Por favor, intentá de nuevo.");
     }
-});
-
-// Admin Logic
-adminLoginBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    adminModal.classList.remove('hidden');
-    adminLoginSection.classList.remove('hidden');
-    adminDashboardSection.classList.add('hidden');
-    adminPassword.value = '';
-    adminError.classList.add('hidden');
-    document.body.classList.add('locked'); // Prevent background scrolling
-});
-
-closeAdminBtn.addEventListener('click', () => {
-    adminModal.classList.add('hidden');
-    document.body.classList.remove('locked');
-});
-
-adminSubmit.addEventListener('click', () => {
-    if (adminPassword.value === 'Admin123@') { // Simple password
-        adminError.classList.add('hidden');
-        adminLoginSection.classList.add('hidden');
-        adminDashboardSection.classList.remove('hidden');
-        renderAdminDashboard();
-    } else {
-        adminError.classList.remove('hidden');
-    }
-});
-
-// Allow Enter key to submit Admin Password
-adminPassword.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        adminSubmit.click();
-    }
-});
-
-async function renderAdminDashboard() {
-    guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--gold);">Cargando confirmaciones...</td></tr>';
-
-    try {
-        const querySnapshot = await getDocs(collection(db, "rsvps"));
-        const data = [];
-        querySnapshot.forEach((document) => {
-            data.push({ id: document.id, ...document.data() });
-        });
-
-        guestsTbody.innerHTML = '';
-
-        let totalAdults = 0;
-        let totalChildren = 0;
-
-        if (data.length === 0) {
-            guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay confirmaciones aún.</td></tr>';
-            document.getElementById('count-adults').innerText = "0";
-            document.getElementById('count-children').innerText = "0";
-            return;
-        }
-
-        data.forEach(guest => {
-            let extraInfo = '-';
-
-            if (guest.attending === 'Sí') {
-                totalAdults++; // The main guest is always considered an Adult
-
-                if (guest.extraGuests && guest.extraGuests.length > 0) {
-                    extraInfo = guest.extraGuests.map(eg => {
-                        if (eg.type === 'Adulto') {
-                            totalAdults++;
-                        } else if (eg.type === 'Niño/a') {
-                            totalChildren++;
-                        }
-                        return `&bull; ${eg.name} <i>(${eg.type})</i>`;
-                    }).join('<br>');
-                }
-            }
-
-            const row = `
-                <tr>
-                    <td><strong>${guest.name}</strong></td>
-                    <td><span style="color: ${guest.attending === 'Sí' ? '#2ecc71' : '#e74c3c'}; font-weight: bold;">${guest.attending}</span></td>
-                    <td>${guest.numGuests}</td>
-                    <td>${extraInfo}</td>
-                </tr>
-            `;
-            guestsTbody.insertAdjacentHTML('beforeend', row);
-        });
-
-        document.getElementById('count-adults').innerText = totalAdults;
-        document.getElementById('count-children').innerText = totalChildren;
-    } catch (e) {
-        guestsTbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error al cargar datos.</td></tr>';
-        console.error(e);
-    }
-}
-
-clearGuestsBtn.addEventListener('click', async () => {
-    if (confirm('¿Estás seguro de que deseas borrar toda la lista de invitados? Esta acción no se puede deshacer.')) {
-        const prevText = clearGuestsBtn.innerHTML;
-        clearGuestsBtn.innerHTML = "Borrando...";
-        try {
-            const querySnapshot = await getDocs(collection(db, "rsvps"));
-            const deletePromises = [];
-            querySnapshot.forEach((document) => {
-                deletePromises.push(deleteDoc(doc(db, "rsvps", document.id)));
-            });
-            await Promise.all(deletePromises);
-            renderAdminDashboard();
-        } catch (e) {
-            console.error(e);
-            alert("Hubo un error al borrar.");
-        }
-        clearGuestsBtn.innerHTML = prevText;
-    }
-});
-
-printGuestsBtn.addEventListener('click', () => {
-    window.print();
 });

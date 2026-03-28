@@ -164,67 +164,12 @@
 
             </div>
             <div style="margin-top: 4rem;">
-                <a href="#" id="admin-login-btn"
+                <a href="admin.html" id="admin-login-btn"
                     style="color: var(--gold-dark); opacity: 0.5; font-size: 0.8rem; text-decoration: none;"><i
                         class="fas fa-lock"></i> Acceso Admin</a>
             </div>
         </div>
     </footer>
-
-    <!-- Admin Modal -->
-    <div id="admin-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-modal" id="close-admin">&times;</span>
-            <h2 style="color: var(--gold);">Panel de Administrador</h2>
-
-            <div id="admin-login-section">
-                <div class="form-group">
-                    <input type="password" id="admin-password" placeholder="Contraseña" autocomplete="new-password">
-                </div>
-                <button id="admin-submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
-                <p id="admin-error" class="hidden" style="color: #e74c3c; margin-top: 10px; text-align: center;">
-                    Contraseña incorrecta</p>
-            </div>
-
-            <div id="admin-dashboard-section" class="hidden">
-                <h1 id="print-header" class="hidden"
-                    style="font-family: var(--font-heading); text-align: center; margin-bottom: 2rem;">Cris & Romi</h1>
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
-                    <h3 style="color: var(--gold);">Lista de Confirmados</h3>
-                    <div style="display: flex; gap: 10px;">
-                        <button id="print-guests" class="btn btn-primary"
-                            style="padding: 0.5rem 1rem; font-size: 0.8rem;"><i class="fas fa-print"></i>
-                            Imprimir</button>
-                        <button id="clear-guests" class="btn btn-outline"
-                            style="padding: 0.5rem 1rem; font-size: 0.8rem;">Borrar Datos</button>
-                    </div>
-                </div>
-
-                <div id="guest-stats"
-                    style="margin-bottom: 1rem; color: var(--off-white); display: flex; gap: 1.5rem; justify-content: center; background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 8px;">
-                    <span>Total Adultos: <strong id="count-adults" style="color: var(--gold);">0</strong></span>
-                    <span>Total Niños/as: <strong id="count-children" style="color: var(--gold);">0</strong></span>
-                </div>
-
-                <div class="table-container">
-                    <table class="guests-table">
-                        <thead>
-                            <tr>
-                                <th>Apellido y Nombre</th>
-                                <th>Asiste</th>
-                                <th>Acompañantes</th>
-                                <th>Detalle Acompañantes</th>
-                            </tr>
-                        </thead>
-                        <tbody id="guests-tbody" style="color: var(--white);">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
