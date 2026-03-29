@@ -129,28 +129,9 @@
     <section class="rsvp">
         <div class="container reveal">
             <h2>Confirmar Asistencia</h2>
-            <p class="texto-centrado">Por favor, confirmá tu asistencia antes del 27 de Marzo.</p>
-            <form id="rsvp-form" class="rsvp-form">
-                <div class="form-group">
-                    <label for="name">Nombre y Apellido</label>
-                    <input type="text" id="name" required placeholder="Ingresá tu nombre" autocomplete="name">
-                </div>
-                <div class="form-group">
-                    <label for="attend">¿Asistirás?</label>
-                    <select id="attend" required>
-                        <option value="" disabled selected>Seleccioná una opción</option>
-                        <option value="yes">Sí, ahí estaré</option>
-                        <option value="no">No podré asistir</option>
-                    </select>
-                </div>
-                <div class="form-group" id="guests-group" style="display: none;">
-                    <label for="guests">Cantidad de acompañantes</label>
-                    <input type="number" id="guests" min="0" max="5" value="0">
-                </div>
-                <div id="dynamic-guests-container"></div>
-                <button type="submit" class="btn btn-primary">Enviar Confirmación</button>
-            </form>
-            <div id="form-success" class="hidden message">¡Gracias por confirmar! Te esperamos.</div>
+            <p class="texto-centrado" style="font-size: 1.2rem; margin-top: 1.5rem; color: var(--gold-dark);">
+                El periodo de confirmación de asistencia ha finalizado.<br>¡Gracias a todos los que confirmaron y los esperamos!
+            </p>
         </div>
     </section>
 

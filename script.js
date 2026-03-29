@@ -18,13 +18,7 @@ const db = getFirestore(app);
 // DOM Elements
 const musicBtn = document.getElementById('music-toggle');
 const bgMusic = document.getElementById('bg-music');
-const rsvpForm = document.getElementById('rsvp-form');
-const formSuccess = document.getElementById('form-success');
-const attendSelect = document.getElementById('attend');
-const guestsGroup = document.getElementById('guests-group');
-
-const guestsInput = document.getElementById('guests');
-const dynamicGuestsContainer = document.getElementById('dynamic-guests-container');
+// (RSVP form elements removed)
 
 // Empty Admin section variable declarations removed
 
@@ -139,97 +133,4 @@ const x = setInterval(function () {
     document.getElementById("seconds").innerHTML = seconds < 10 ? '0' + seconds : seconds;
 }, 1000);
 
-// Guests Toggle
-attendSelect.addEventListener('change', (e) => {
-    if (e.target.value === 'yes') {
-        guestsGroup.style.display = 'block';
-    } else {
-        guestsGroup.style.display = 'none';
-        guestsInput.value = 0;
-        dynamicGuestsContainer.innerHTML = '';
-    }
-});
-
-guestsInput.addEventListener('input', (e) => {
-    const num = parseInt(e.target.value) || 0;
-    dynamicGuestsContainer.innerHTML = ''; // Clear existing
-
-    if (num > 0) {
-        for (let i = 1; i <= num; i++) {
-            const guestHtml = `
-                <div class="dynamic-guest fade-in-up">
-                    <p style="color: var(--gold); margin-bottom: 0.5rem; font-size: 0.9rem;">Acompañante #${i}</p>
-                    <div class="guest-row">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <input type="text" class="guest-name" required placeholder="Nombre y Apellido" autocomplete="off">
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <select class="guest-type" required>
-                                <option value="" disabled selected>Seleccioná si es...</option>
-                                <option value="Adulto">Adulto</option>
-                                <option value="Niño/a">Niño/a</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            `;
-            dynamicGuestsContainer.insertAdjacentHTML('beforeend', guestHtml);
-        }
-    }
-});
-
-// RSVP Form Submit
-rsvpForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    // Collect data
-    const btn = rsvpForm.querySelector('button[type="submit"]');
-    const originalText = btn.innerHTML;
-
-    const mainName = document.getElementById('name').value;
-    const isAttending = attendSelect.value;
-    const numGuests = parseInt(guestsInput.value) || 0;
-
-    let extraGuests = [];
-    if (isAttending === 'yes' && numGuests > 0) {
-        const guestNames = document.querySelectorAll('.guest-name');
-        const guestTypes = document.querySelectorAll('.guest-type');
-
-        for (let i = 0; i < numGuests; i++) {
-            extraGuests.push({
-                name: guestNames[i] ? guestNames[i].value : '',
-                type: guestTypes[i] ? guestTypes[i].value : ''
-            });
-        }
-    }
-
-    const registrationData = {
-        name: mainName,
-        attending: isAttending === 'yes' ? 'Sí' : 'No',
-        numGuests: isAttending === 'yes' ? numGuests : 0,
-        extraGuests: extraGuests,
-        timestamp: new Date().toLocaleString()
-    };
-
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-    btn.disabled = true;
-
-    try {
-        await addDoc(collection(db, "rsvps"), registrationData);
-        rsvpForm.style.display = 'none';
-        formSuccess.classList.remove('hidden');
-
-        setTimeout(() => {
-            rsvpForm.reset();
-            dynamicGuestsContainer.innerHTML = '';
-            guestsGroup.style.display = 'none';
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        }, 3000);
-    } catch (error) {
-        console.error("Error writing document: ", error);
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        alert("Hubo un error al enviar tu confirmación. Por favor, intentá de nuevo.");
-    }
-});
+// (RSVP handlers removed)
